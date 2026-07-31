@@ -29,6 +29,19 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Setup de Supabase (manual, una sola vez)
+
+1. Crear proyecto en https://supabase.com/dashboard
+2. SQL Editor → pegar y correr `supabase/migrations/001_productos.sql`
+3. Storage → crear bucket `productos-img`, marcarlo público en lectura
+4. Authentication → Users → crear manualmente el usuario admin (email + password), sin registro público
+5. Project Settings → API → copiar `Project URL` y `anon public` key a `.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=...
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+   ```
+6. Después del primer deploy en Vercel: Authentication → URL Configuration → agregar la URL de Vercel en Site URL y Redirect URLs.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
