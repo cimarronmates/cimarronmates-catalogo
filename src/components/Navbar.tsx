@@ -32,6 +32,7 @@ export default function Navbar() {
         <button
           className="md:hidden"
           aria-label="Abrir menú"
+          aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
           <span className="block h-0.5 w-6 bg-white" />
