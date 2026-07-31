@@ -25,3 +25,14 @@ body {
   color: var(--color-neutral-dark);
   background: #ffffff;
 }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee {
+  animation: marquee-scroll 30s linear infinite;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
