@@ -47,3 +47,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deploy
+
+1. Crear repo en GitHub y pushear esta carpeta.
+2. Conectar el repo en Vercel (Hobby plan requiere que el repo sea personal o público si es de una organización).
+3. Agregar env vars en Vercel: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+4. Después del primer deploy, agregar la URL de Vercel en Supabase → Authentication → URL Configuration (Site URL + Redirect URLs).
