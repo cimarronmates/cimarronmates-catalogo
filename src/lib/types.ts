@@ -1,4 +1,5 @@
 export type Estado = "Disponible" | "Sin stock";
+export type Categoria = string;
 
 export interface Producto {
   id: string;
