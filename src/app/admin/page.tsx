@@ -21,8 +21,15 @@ export default function AdminPage() {
   }, []);
 
   async function handleReorder(categoria: string, orderedIds: string[]) {
+    const currentSlots = productos
+      .filter((p) => p.subcategoria === categoria)
+      .map((p) => p.orden_display)
+      .sort((a, b) => a - b);
+
     await Promise.all(
-      orderedIds.map((id, index) => supabase.from("productos").update({ orden_display: index }).eq("id", id))
+      orderedIds.map((id, index) =>
+        supabase.from("productos").update({ orden_display: currentSlots[index] }).eq("id", id)
+      )
     );
     reload();
   }
