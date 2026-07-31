@@ -1,52 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cimarrón Mates
 
-## Getting Started
+Sitio de catálogo para Cimarrón Mates (accesorios para mate artesanales), hecho con Next.js, Tailwind y Supabase.
 
-First, run the development server:
+## Desarrollo local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Abrí [http://localhost:3000](http://localhost:3000).
 
 ## Setup de Supabase (manual, una sola vez)
 
+Seguí estos pasos en orden:
+
 1. Crear proyecto en https://supabase.com/dashboard
-2. SQL Editor → pegar y correr `supabase/migrations/001_productos.sql`
-3. Storage → crear bucket `productos-img`, marcarlo público en lectura
-4. Authentication → Users → crear manualmente el usuario admin (email + password), sin registro público
-5. Project Settings → API → copiar `Project URL` y `anon public` key a `.env.local`:
+2. SQL Editor → pegar y correr `supabase/migrations/001_productos.sql` (crea la tabla `productos`, las políticas de RLS y la política de Storage para subir imágenes).
+3. Storage → crear bucket `productos-img`, marcarlo público en lectura.
+4. **Deshabilitar el registro público de usuarios** (paso crítico de seguridad): Authentication → Providers → Email → apagar la opción de permitir que usuarios nuevos se registren (el texto exacto puede variar según la versión del dashboard de Supabase, pero es la opción que controla el alta pública de cuentas). Si no se deshabilita, cualquier persona podría crear una cuenta por la API pública de Supabase y obtener acceso de escritura completo al catálogo, sin pasar por el login de `/admin`.
+5. Authentication → Users → crear manualmente el usuario admin (email + password).
+6. Project Settings → API → copiar `Project URL` y `anon public` key a `.env.local`:
    ```
    NEXT_PUBLIC_SUPABASE_URL=...
    NEXT_PUBLIC_SUPABASE_ANON_KEY=...
    ```
-6. Después del primer deploy en Vercel: Authentication → URL Configuration → agregar la URL de Vercel en Site URL y Redirect URLs.
 
-## Deploy on Vercel
+El panel de administración está en `/admin/login`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tests y build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test
+npm run build
+```
 
 ## Deploy
 
