@@ -31,15 +31,6 @@ export default function ProductCard({ producto }: { producto: Producto }) {
       <div className="flex flex-1 flex-col gap-1 p-4">
         <h3 className="font-heading text-lg text-marca-700">{producto.nombre}</h3>
         {producto.descripcion_corta && <p className="text-sm text-neutral-mid">{producto.descripcion_corta}</p>}
-        {producto.atributo && producto.atributo.length > 0 && (
-          <div className="flex flex-wrap gap-1 pt-1">
-            {producto.atributo.map((a) => (
-              <span key={a} className="rounded-full bg-marca-50 px-2 py-0.5 text-xs text-marca-700">
-                {a}
-              </span>
-            ))}
-          </div>
-        )}
         <p className="mt-2 text-xl font-bold text-marca-700">${producto.precio.toLocaleString("es-AR")}</p>
         <a
           href={buildConsultaLink(producto)}

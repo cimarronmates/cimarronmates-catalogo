@@ -8,7 +8,6 @@ export interface Producto {
   imagen_url: string | null;
   categoria: string;
   subcategoria: string;
-  atributo: string[] | null;
   estado: Estado;
   precio: number;
   destacado: boolean;

@@ -16,7 +16,6 @@ const DESCRIPCION_MAX = 150;
 
 export default function ProductFormModal({ producto, onClose, onSaved }: Props) {
   const supabase = createBrowserClient();
-  const isSuelta = producto ? SUELTAS.includes(producto.categoria) : false;
 
   const [nombre, setNombre] = useState(producto?.nombre ?? "");
   const [descripcion, setDescripcion] = useState(producto?.descripcion_corta ?? "");
@@ -25,7 +24,6 @@ export default function ProductFormModal({ producto, onClose, onSaved }: Props) 
   const [subcategoria, setSubcategoria] = useState<string>(producto?.subcategoria ?? "");
   const [estado, setEstado] = useState<Estado>(producto?.estado ?? "Disponible");
   const [destacado, setDestacado] = useState(producto?.destacado ?? false);
-  const [imagenUrl, setImagenUrl] = useState<string | null>(producto?.imagen_url ?? null);
   const [imagenFile, setImagenFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(producto?.imagen_url ?? null);
   const [saving, setSaving] = useState(false);
@@ -48,7 +46,7 @@ export default function ProductFormModal({ producto, onClose, onSaved }: Props) 
     setError(null);
 
     try {
-      let finalImagenUrl = imagenUrl;
+      let finalImagenUrl = producto?.imagen_url ?? null;
 
       if (imagenFile) {
         const path = `${Date.now()}-${imagenFile.name}`;
@@ -75,7 +73,18 @@ export default function ProductFormModal({ producto, onClose, onSaved }: Props) 
         const { error: updateError } = await supabase.from("productos").update(payload).eq("id", producto.id);
         if (updateError) throw updateError;
       } else {
-        const { error: insertError } = await supabase.from("productos").insert(payload);
+        const { data: maxRows, error: maxError } = await supabase
+          .from("productos")
+          .select("orden_display")
+          .eq("subcategoria", finalSubcategoria)
+          .order("orden_display", { ascending: false })
+          .limit(1);
+        if (maxError) throw maxError;
+        const nextOrden = (maxRows?.[0]?.orden_display ?? -1) + 1;
+
+        const { error: insertError } = await supabase
+          .from("productos")
+          .insert({ ...payload, orden_display: nextOrden });
         if (insertError) throw insertError;
       }
 

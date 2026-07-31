@@ -17,7 +17,6 @@ function producto(overrides: Partial<Producto>): Producto {
     imagen_url: null,
     categoria: "Mates",
     subcategoria: "Torpedo",
-    atributo: null,
     estado: "Disponible",
     precio: 10000,
     destacado: false,
