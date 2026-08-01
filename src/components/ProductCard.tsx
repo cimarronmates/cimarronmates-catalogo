@@ -36,15 +36,17 @@ export default function ProductCard({ producto }: { producto: Producto }) {
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="font-display text-[1.0625rem] font-semibold leading-snug text-marca-700">
-          {producto.nombre}
-        </h3>
+        <div className="flex-1">
+          <h3 className="font-display text-[1.0625rem] font-semibold leading-snug text-marca-700">
+            {producto.nombre}
+          </h3>
 
-        {producto.descripcion_corta && (
-          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-tinta-suave">
-            {producto.descripcion_corta}
-          </p>
-        )}
+          {producto.descripcion_corta && (
+            <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-tinta-suave">
+              {producto.descripcion_corta}
+            </p>
+          )}
+        </div>
 
         <p className="mt-3 font-display text-2xl font-semibold tracking-tight text-marca-700">
           <span className="text-base font-medium text-tinta-suave">$</span>

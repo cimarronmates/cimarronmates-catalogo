@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
-import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { siteConfig } from "@/lib/config";
-import { buildContactoLink } from "@/lib/whatsapp";
 import { ArrowDownIcon, OrnamentRule, WhatsAppIcon } from "@/components/icons";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+
+import Image from "next/image";
+import { buildContactoLink } from "@/lib/whatsapp";
+import { siteConfig } from "@/lib/config";
+import { useRef } from "react";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -71,8 +72,8 @@ export default function Hero() {
         {...rise(0.22)}
         className="mt-5 max-w-[52ch] text-balance text-base leading-relaxed text-crema/75 sm:text-lg"
       >
-        Mates, bombillas, termos y yerbas elegidos uno por uno. Escribinos y te
-        respondemos al toque.
+        Escribinos y te
+        respondemos en breve.
       </motion.p>
 
       <motion.div

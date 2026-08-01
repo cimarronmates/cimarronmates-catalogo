@@ -66,7 +66,7 @@ export default function Catalogo({ productos }: { productos: Producto[] }) {
             <OrnamentRule className="h-3 w-24" />
           </div>
           <p className="mx-auto mt-4 max-w-[46ch] text-balance text-tinta-suave">
-            Elegí lo que buscás y consultanos. Cada pieza se entrega revisada a mano.
+            Elegí lo que buscás y consultanos.
           </p>
         </header>
 
