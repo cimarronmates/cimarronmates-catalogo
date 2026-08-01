@@ -1,38 +1,240 @@
 @import "tailwindcss";
 
 @theme {
-  --color-marca-50:  #d4f0e5;
-  --color-marca-100: #b8e6d1;
-  --color-marca-200: #8dcfae;
-  --color-marca-300: #5a9e6f;
+  /* ---- Brand greens, sampled from the emblem ------------------------- */
+  --color-marca-50: #f4f7ec;
+  --color-marca-100: #e6edd4;
+  --color-marca-200: #cbdcae;
+  --color-marca-300: #96b56b;
   --color-marca-400: #2d6e3e;
   --color-marca-500: #245535;
   --color-marca-600: #1e4a2f;
   --color-marca-700: #1a3d2a;
-  --color-marca-blush: #d4a574;
-  --color-marca-cream: #f4e8d8;
+  --color-marca-800: #143020;
+  --color-marca-900: #0d2116;
 
-  --color-neutral-dark: #2c3e50;
-  --color-neutral-mid: #7f8c8d;
-  --color-neutral-light: #ecf0f1;
+  /* ---- Accents -------------------------------------------------------- */
+  --color-oro-300: #f2dc9a;
+  --color-oro-400: #e6c65f;
+  --color-oro-500: #d9a441;
+  --color-oro-600: #b3822c;
+  --color-crema: #f7f1e3;
+  --color-crema-hondo: #efe5cf;
 
-  --font-heading: "Georgia", serif;
-  --font-sans: system-ui, -apple-system, sans-serif;
+  /* ---- Ink & lines. Warm, tinted toward the brand, contrast-checked. --- */
+  --color-tinta: #1c2419;        /* 14.9:1 on crema  */
+  --color-tinta-suave: #5c6657;  /*  6.0:1 on white, 5.0:1 on crema */
+  --color-linea: #e2e6d8;
+  --color-linea-fuerte: #cdd4bd;
+
+  /* ---- Semantic state (fixed, never re-skinned by the brand ramp) ------ */
+  --color-exito: #2f7d43;
+  --color-exito-suave: #e8f3e9;
+  --color-alerta: #b3261e;
+  --color-alerta-suave: #fbeae9;
+
+  /* ---- Type ----------------------------------------------------------- */
+  --font-display: var(--font-piazzolla), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-archivo), system-ui, -apple-system, sans-serif;
+
+  /* ---- Motion --------------------------------------------------------- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Semantic z-scale ----------------------------------------------- */
+  --z-sticky: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
 }
 
-body {
-  font-family: var(--font-sans);
-  color: var(--color-neutral-dark);
-  background: #ffffff;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchored sections clear the sticky header instead of hiding under it. */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-tinta);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* One consistent, high-contrast focus ring everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-oro-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Dark surfaces need the light-side ring to stay visible. */
+  .surface-oscura :focus-visible {
+    outline-color: var(--color-oro-400);
+  }
+}
+
+@layer components {
+  /* Fine paper grain: keeps the large flat green surfaces from reading
+     as flat digital fill. Pure CSS, no asset request. */
+  .textura-papel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.22;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Native <dialog> gives us the focus trap, Escape handling, inert
+     background and top-layer rendering for free — no stacking-context or
+     overflow-clipping traps. We only reset its chrome. */
+  dialog {
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    max-width: min(100vw - 1.5rem, 36rem);
+    max-height: calc(100dvh - 2rem);
+  }
+  dialog::backdrop {
+    background: rgba(13, 33, 22, 0.62);
+    backdrop-filter: blur(2px);
+  }
+  dialog[open] > * {
+    animation: dialog-in 0.22s var(--ease-out-quart) both;
+  }
+
+  /* Dual-thumb price range. Both inputs are stacked and transparent to
+     pointer events except on the thumb itself, so each thumb stays
+     independently draggable regardless of stacking order. */
+  .rango {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    inset-inline: 0;
+    width: 100%;
+    /* A 44px grab area, not just the 20px visual thumb. */
+    height: 2.75rem;
+    margin: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+  .rango::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    pointer-events: auto;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 9999px;
+    background: #fff;
+    border: 2px solid var(--color-marca-400);
+    box-shadow: 0 1px 5px rgba(28, 36, 25, 0.3);
+    cursor: grab;
+    transition: transform 0.15s var(--ease-out-quart);
+  }
+  .rango::-moz-range-thumb {
+    pointer-events: auto;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 9999px;
+    background: #fff;
+    border: 2px solid var(--color-marca-400);
+    box-shadow: 0 1px 5px rgba(28, 36, 25, 0.3);
+    cursor: grab;
+    transition: transform 0.15s var(--ease-out-quart);
+  }
+  .rango::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+  .rango::-moz-range-thumb:hover {
+    transform: scale(1.12);
+  }
+  .rango:focus-visible::-webkit-slider-thumb {
+    outline: 2px solid var(--color-oro-500);
+    outline-offset: 2px;
+  }
+  .rango:focus-visible::-moz-range-thumb {
+    outline: 2px solid var(--color-oro-500);
+    outline-offset: 2px;
+  }
+  .rango:disabled::-webkit-slider-thumb {
+    border-color: var(--color-linea-fuerte);
+    cursor: not-allowed;
+  }
+  .rango:disabled::-moz-range-thumb {
+    border-color: var(--color-linea-fuerte);
+    cursor: not-allowed;
+  }
+
+  /* Marquee track. Duplicated content is translated by exactly half. */
+  .marquee {
+    animation: marquee-scroll 46s linear infinite;
+  }
+  .marquee:hover,
+  .marquee:focus-within {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
-.marquee {
-  animation: marquee-scroll 30s linear infinite;
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
-.marquee:hover {
-  animation-play-state: paused;
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .marquee {
+    animation: none;
+    transform: none;
+  }
+
+  /* Without the scroll the duplicated half is noise: drop it and let the
+     row be swiped by hand instead of freezing mid-track. */
+  .marquee-dup {
+    display: none;
+  }
+  .marquee-viewport {
+    overflow-x: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
