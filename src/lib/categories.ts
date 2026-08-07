@@ -8,4 +8,4 @@ export const GRUPOS: Grupo[] = [
   { nombre: "Bombillas", categorias: ["Alpaca", "Acero"] },
 ];
 
-export const SUELTAS: string[] = ["Termos/Vasos", "Yerbas", "Yerberas", "Combos", "Set Asado", "Accesorios"];
+export const SUELTAS: string[] = ["Termos/Vasos", "Yerbas", "Yerberas", "Materas", "Combos", "Set Asado", "Accesorios"];
