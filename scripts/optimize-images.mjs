@@ -143,4 +143,4 @@ console.log(
 );
 console.log(`Fallos: ${fallos}`);
 if (!apply) console.log("Simulacro: no se subió ni modificó nada. Agregá --apply para aplicar.");
-process.exit(fallos ? 1 : 0);
+process.exitCode = fallos ? 1 : 0;
