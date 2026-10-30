@@ -188,6 +188,15 @@ export function UploadIcon(props: IconProps) {
   );
 }
 
+export function SearchIcon(props: IconProps) {
+  return (
+    <Outline {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </Outline>
+  );
+}
+
 export function SearchOffIcon(props: IconProps) {
   return (
     <Outline {...props}>

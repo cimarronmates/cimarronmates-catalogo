@@ -17,8 +17,10 @@ import { buildContactoLink } from "@/lib/whatsapp";
 import {
   ChevronDownIcon,
   OrnamentRule,
+  SearchIcon,
   SearchOffIcon,
   WhatsAppIcon,
+  XIcon,
 } from "@/components/icons";
 
 const chipBase =
@@ -38,6 +40,7 @@ export default function Catalogo({ productos }: { productos: Producto[] }) {
     !filters.grupo &&
     !filters.categoria &&
     !filters.soloDisponibles &&
+    !filters.busqueda &&
     filters.precioMin === bounds.min &&
     filters.precioMax === bounds.max;
 
@@ -98,6 +101,29 @@ export default function Catalogo({ productos }: { productos: Producto[] }) {
           <>
         {/* --- Filters ---------------------------------------------------- */}
         <div className="rounded-2xl border border-linea bg-crema/45 p-4 sm:p-5">
+          <div className="relative mb-4">
+            <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-tinta-suave" />
+            <input
+              type="search"
+              value={filters.busqueda}
+              onChange={(e) => setFilters((f) => ({ ...f, busqueda: e.target.value }))}
+              placeholder="Buscar mates, bombillas, termos…"
+              aria-label="Buscar productos"
+              autoComplete="off"
+              className="min-h-11 w-full rounded-xl border border-linea-fuerte bg-white py-2 pl-11 pr-11 text-base text-tinta placeholder:text-tinta-suave/70 focus:border-marca-400 focus:outline-none focus:ring-2 focus:ring-marca-400/25 [&::-webkit-search-cancel-button]:hidden"
+            />
+            {filters.busqueda && (
+              <button
+                type="button"
+                onClick={() => setFilters((f) => ({ ...f, busqueda: "" }))}
+                aria-label="Borrar búsqueda"
+                className="absolute right-1 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-lg text-tinta-suave transition-colors hover:text-marca-700"
+              >
+                <XIcon className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
@@ -233,7 +259,7 @@ export default function Catalogo({ productos }: { productos: Producto[] }) {
                 No encontramos nada con esos filtros
               </p>
               <p className="mx-auto mt-1 max-w-[42ch] text-sm text-tinta-suave">
-                Probá ampliar el rango de precio o volver a ver todas las categorías.
+                Probá con otra palabra, ampliar el rango de precio o volver a ver todas las categorías.
               </p>
             </div>
             <button
