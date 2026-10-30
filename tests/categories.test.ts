@@ -10,6 +10,6 @@ describe("categories", () => {
   });
 
   it("has the confirmed loose categories", () => {
-    expect(SUELTAS).toEqual(["Termos/Vasos", "Yerbas", "Yerberas", "Combos", "Set Asado", "Accesorios"]);
+    expect(SUELTAS).toEqual(["Termos/Vasos", "Yerbas", "Yerberas", "Materas", "Combos", "Set Asado", "Accesorios"]);
   });
 });

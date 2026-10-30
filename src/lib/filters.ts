@@ -9,9 +9,10 @@ export interface FilterState {
   precioMax: number;
 }
 
+// Sin stock products show "Precio a consultar", so their price must not shape the slider.
 export function getPriceBounds(productos: Producto[]): { min: number; max: number } {
-  if (productos.length === 0) return { min: 0, max: 0 };
-  const precios = productos.map((p) => p.precio);
+  const precios = productos.filter((p) => p.estado === "Disponible").map((p) => p.precio);
+  if (precios.length === 0) return { min: 0, max: 0 };
   return { min: Math.min(...precios), max: Math.max(...precios) };
 }
 
@@ -38,7 +39,9 @@ export function applyFilters(productos: Producto[], filters: FilterState): Produ
     if (filters.grupo && p.categoria !== filters.grupo) return false;
     if (filters.categoria && p.subcategoria !== filters.categoria) return false;
     if (filters.soloDisponibles && p.estado !== "Disponible") return false;
-    if (p.precio < filters.precioMin || p.precio > filters.precioMax) return false;
+    if (p.estado === "Disponible" && (p.precio < filters.precioMin || p.precio > filters.precioMax)) {
+      return false;
+    }
     return true;
   });
 }

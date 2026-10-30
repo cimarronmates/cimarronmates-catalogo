@@ -48,10 +48,16 @@ export default function ProductCard({ producto }: { producto: Producto }) {
           )}
         </div>
 
-        <p className="mt-3 font-display text-2xl font-semibold tracking-tight text-marca-700">
-          <span className="text-base font-medium text-tinta-suave">$</span>
-          {producto.precio.toLocaleString("es-AR")}
-        </p>
+        {disponible ? (
+          <p className="mt-3 font-display text-2xl font-semibold tracking-tight text-marca-700">
+            <span className="text-base font-medium text-tinta-suave">$</span>
+            {producto.precio.toLocaleString("es-AR")}
+          </p>
+        ) : (
+          <p className="mt-3 flex min-h-8 items-center font-display text-lg font-semibold tracking-tight text-tinta-suave">
+            Precio a consultar
+          </p>
+        )}
 
         <a
           href={buildConsultaLink(producto)}
